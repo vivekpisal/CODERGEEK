@@ -1,0 +1,33 @@
+{% extends "main/base.html" %}
+{% block content %}
+
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v9.0" nonce="vvpna4yx"></script>
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v9.0" nonce="K3aNxlvH"></script>
+
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="list-group">
+        <ul class="ul">
+        {% for i in articles %}
+      
+            <li class="li"><a class="#" href="{% url 'showarticle' i.title %}" style="color: darkblue;">{{i.title}}</a></li>
+ 
+        {% endfor %}
+         </ul>
+      </div>
+    </div>
+    <div class="col-8">
+      {{article.html|safe}}
+      <div class="fb-like" data-href="http://127.0.0.1:8000/article/{{article.title}}" data-width="" data-layout="button_count" data-action="like" data-size="large" data-share="true"></div>
+      <div class="fb-comments" data-href="http://127.0.0.1:8000/article/{{article.title}}" data-width="" data-numposts="5"></div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

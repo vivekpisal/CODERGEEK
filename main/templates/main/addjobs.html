@@ -1,0 +1,68 @@
+{% extends 'main/base.html' %}
+
+
+{% block content %}
+<style type="text/css">
+	.new{
+		width: 20rem;
+		height: 2.5rem;
+		border-color: white;
+		border-bottom-color: red;
+	}
+</style>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+
+<form method="post" id="job-form" style="margin-left: 5rem;margin-top: 0rem;">
+	<h1 style="size: 2rem;">Add Job</h1>
+	<div class="form-row">
+		<div class="row-6">
+			{% csrf_token %}
+			<label>Company Name</label>
+			<br>
+			<input type="text" name="company_name" id="company_name" class="new" placeholder="Company Name" required>
+			<br>
+			<label>Job Role</label>
+			<br>
+			<input type="text" name="job_role" id="job_role" class="new" placeholder="Job Role" required>
+			<br>
+			<label>Description</label>
+			<br>
+			<textarea id="summernote" name="description"></textarea>
+			<br>
+			<label>Company Website</label>
+			<br>
+			<input type="url" name="company_website" id="company_website" class="new" placeholder="Company Website" required>
+			<br>
+			<label>Application Link</label>
+			<br>
+			<input type="url" name="application_link" id="application_link" class="new" placeholder="Application Link" required>
+			<br>
+			<label>Last Date</label>
+			<br>
+			<input type="date" id="date" name="date" class="new" data-provide="datepicker" min="{{today}}" required>
+			<br>
+			<button type="submit" class="btn btn-success">Add Job</button>
+		</div>
+	</div>
+</form>
+
+<script>
+      $('#summernote').summernote({
+        placeholder: 'Job Description',
+        tabsize: 2,
+        height: 120,
+        toolbar: [
+          ['style', ['style']],
+          ['font', ['bold', 'underline', 'clear']],
+          ['color', ['color']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          ['table', ['table']],
+          ['view', ['fullscreen', 'codeview', 'help']]
+        ]
+      });
+</script>
+
+{% endblock %}

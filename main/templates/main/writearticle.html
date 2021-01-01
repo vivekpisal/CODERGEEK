@@ -1,0 +1,88 @@
+{% extends "main/base1.html" %}
+
+{% block content %}
+
+      <form method="POST" id="edit-article-form">
+        {% csrf_token %}
+          <br>
+          <label>Title:</label>
+          <input type="text" style="border: 2px solid #555;height:2.5rem" placeholder="Title" name="title" id="title"  value="{{title}}" required>
+          <label>Domain:</label>
+          <select style="border: 2px  #555;height:2.5rem" name="domain" id="domain" required>
+            <option selected>{{domain}}</option>
+            <option value="Data Science">Data Science</option>
+            <option value="Machine Learning">Machine Learning</option>
+            <option value="Python">Python</option>
+            <option value="Web Technologies">Web Technologies</option>
+            <option value="C++">C++</option>
+            <option value="Java">Java</option>
+            <option value="Deep Learning">Deep Learning</option>
+            <option value="DBMS">DBMS</option>
+            <option value="OOPS">OOPS</option>
+          </select>
+          <br><br>
+          <textarea id="summernote" name="editordata" id="summernote">{{html}}</textarea>
+          <button type="submit" formaction="{% url 'writearticle' %}" class="btn btn-primary">Submit For Review</button>
+          <button type="submit" formaction="{% url 'save' %}" id="save" class="btn btn-primary">Save</button></a>
+      </form>
+
+    <script>
+      $('#summernote').summernote({
+        tabsize: 2,
+        height: 500,
+        fontSizes: ['8', '9', '10', '11', '12', '14', '18','20','22'],
+        toolbar: [
+          ['style', ['style']],
+          ['font', ['bold', 'underline', 'clear','strikethrough',
+          'superscript','subscript']],
+          ['fontsize', ['fontsize']],
+          ['color', ['color']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          ['table', ['table']],
+          ['insert', ['link', 'picture', 'video','resizedDataImage']],
+          ['height', ['height']],
+          ['view', ['fullscreen', 'codeview', 'help']]
+        ]
+      });
+    </script>
+
+
+<script type="text/javascript">
+
+    $(document).on('submit','#edit-article-form',function(e){
+      e.preventDefault();
+      $.ajax({
+        type:'POST',
+        url:'{% url "writearticle"  %}',
+        data:{
+          title:$('#title').val(),
+          domain:$('#domain').val(),
+          editordata:$('#summernote').val(),
+          csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+        },
+        success:function(){
+          alert('Article Submitted');
+        }
+      })
+    });
+
+    $(document).on('click',"#save",function(e){
+      e.preventDefault();
+
+      $.ajax({
+        type:'POST',
+        url:'{% url "save" %}',
+        data:{
+          title:$('#title').val(),
+          domain:$('#domain').val(),
+          editordata:$('#summernote').val(),
+          csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+        },
+        success:function(){
+          alert('Article Saved');
+        }
+      })   
+    });
+
+  </script>
+{% endblock  %}

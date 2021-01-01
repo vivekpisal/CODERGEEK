@@ -1,0 +1,43 @@
+{% extends 'main/base.html' %}
+
+
+{% block content %}
+{% load crispy_forms_tags %}
+<div style="margin-left: 5rem;">
+
+{% if user.info.profile %}
+	<img src="{{user.info.profile.url}}" style="height: 10rem;width: 10rem;border-radius: 5rem;">
+{% endif %}
+<form method="post" enctype="multipart/form-data">
+  <div class="form-group col-md-4 mb-0">
+  	{% csrf_token %}
+  		
+  		{{infoform|crispy}}
+    	<label><i class="fa fa-male" aria-hidden="true"></i> Sex:-</label>
+    	<div class="form-check">
+    	{% ifequal user.info.sex "Male" %}
+		  <input class="form-check-input" type="radio" name="sex" id="exampleRadios1" value="Male" checked>
+		{% else %}
+		 <input class="form-check-input" type="radio" name="sex" id="exampleRadios1" value="Male">
+		{% endifequal %}
+		  <label class="form-check-label" for="exampleRadios1">
+		    Male
+		  </label>
+		</div>
+		<div class="form-check">
+		  {% ifequal user.info.sex "Female" %}
+		  <input class="form-check-input" type="radio" name="sex" id="exampleRadios1" value="Female" checked>
+		{% else %}
+		 <input class="form-check-input" type="radio" name="sex" id="exampleRadios1" value="Female">
+		{% endifequal %}
+		  <label class="form-check-label" for="exampleRadios2">
+		    Female
+		  </label>
+		</div>
+		<button type="submit" class="btn btn-success">Update Profile</button>
+</form>
+
+
+</div>
+
+{% endblock %}

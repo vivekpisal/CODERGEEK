@@ -1,0 +1,54 @@
+{% extends 'main/base1.html' %}
+
+{% block content %}
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v9.0" nonce="ZWLZaGak"></script>
+
+<div class="col-10">
+  <form method="post">
+        {% csrf_token %}
+          <br>
+          <label>Title:</label>
+          <input type="text" style="border: 2px solid #555;height:2.5rem" placeholder="Title" name="title" value="{{article.title}}">
+          <label>Domain:</label>
+          <select style="border: 2px  #555;height:2.5rem" name="domain">
+            <option selected>{{article.domain}}</option>
+            <option value="Data Science">Data Science</option>
+            <option value="Machine Learning">Machine Learning</option>
+            <option value="Python">Python</option>
+            <option value="Web Technologies">Web Technologies</option>
+            <option value="C++">C++</option>
+            <option value="Java">Java</option>
+            <option value="Deep Learning">Deep Learning</option>
+            <option value="DBMS">DBMS</option>
+            <option value="OOPS">OOPS</option>
+          </select>
+          <br><br>
+          {{article.html|safe}}
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Publish</button>
+          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Do you want to publish this article?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+</div>
+</div>
+<div class="fb-comments" data-href="http://127.0.0.1:8000/editarticle/{{article.id}}" data-width="" data-numposts="5"></div>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'main/base.html' %}
+{% block content %}
+
+
+<div class="row row-cols-1 row-cols-md-3">
+
+{% if not jobs %}
+
+<center>
+  <h2>No Jobs</h2>
+</center>
+
+{% endif %}
+
+
+{% for job in jobs %}
+
+<div class="col mb-2">
+<div class="card" style="width: 40rem;">
+  <div class="card-body">
+      <h3 class="card-title">{{job.job_role}}</h3>
+      <h6 class="card-title">{{job.company_name}}</h6>
+      <a href="{{job.company_website}}">{{job.company_website}}</a>
+      <br>
+      <p class="card-text">{{job.last_date}}</p>
+      <p>
+        <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample{{job.id}}" role="button" aria-expanded="false" aria-controls="collapseExample">
+          Requirements
+        </a>
+      </p>
+      <div class="collapse" id="collapseExample{{job.id}}">
+        <div class="card card-body">
+          Application Link:- <a href="{{job.application_link}}">{{job.application_link}}</a>
+          <p>
+            {{job.description|safe}}
+          </p>
+        </div>
+      </div>
+  </div>
+</div>
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

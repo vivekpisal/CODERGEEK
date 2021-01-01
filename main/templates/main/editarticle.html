@@ -1,0 +1,96 @@
+{% extends "main/base1.html" %}
+
+{% block content %}
+{% load static %}
+<div id="fb-root"></div>
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v9.0" nonce="ZWLZaGak"></script>
+
+      <form id="edit-article-form" method="POST">
+        {% csrf_token %}
+          <br>
+          <label>Title:</label>
+          <input type="text" style="border: 2px solid #555;height:2.5rem" placeholder="Title" name="title" id="title" maxlength="50" value="{{article.title}}">
+          <label>Domain:</label>
+          <select style="border: 2px  #555;height:2.5rem" name="domain" id="domain">
+            <option selected>{{article.domain}}</option>
+            <option value="Data Science">Data Science</option>
+            <option value="Machine Learning">Machine Learning</option>
+            <option value="Python">Python</option>
+            <option value="Web Technologies">Web Technologies</option>
+            <option value="C++">C++</option>
+            <option value="Java">Java</option>
+            <option value="Deep Learning">Deep Learning</option>
+            <option value="DBMS">DBMS</option>
+            <option value="OOPS">OOPS</option>
+          </select>
+          <br><br>
+          <textarea id="summernote" name="editordata">
+          {{article.html}}
+          </textarea>
+          <button type="submit" class="btn btn-primary">Submit For Review</button>
+          <button formaction="{% url 'save' %}" id="save" class="btn btn-primary">Save</button></a>
+      </form>
+    <script>
+      $('#summernote').summernote({
+        tabsize: 2,
+        height: 500,
+        fontSizes: ['8', '9', '10', '11', '12', '14', '18','20','22'],
+        toolbar: [
+          ['style', ['style']],
+          ['font', ['bold', 'underline', 'clear','strikethrough',
+          'superscript','subscript']],
+          ['fontsize', ['fontsize']],
+          ['color', ['color']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          ['table', ['table']],
+          ['insert', ['link', 'picture', 'video','resizedDataImage']],
+          ['height', ['height']],
+          ['view', ['fullscreen', 'codeview', 'help']]
+        ]
+      });
+    </script>
+
+	<div class="fb-comments" data-href="http://127.0.0.1:8000/editarticle/{{article.id}}" data-width="" data-numposts="5">	
+	</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"> 
+</script>
+  <script type="text/javascript">
+
+    $(document).on('submit','#edit-article-form',function(e){
+      e.preventDefault();
+      $.ajax({
+        type:'POST',
+        url:'{% url "editarticle" article.id %}',
+        data:{
+          title:$('#title').val(),
+          domain:$('#domain').val(),
+          editordata:$('#summernote').val(),
+          csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+        },
+        success:function(){
+          alert('Article Submitted');
+        }
+      })
+    });
+
+    $(document).on('click',"#save",function(e){
+      e.preventDefault();
+
+      $.ajax({
+        type:'POST',
+        url:'{% url "save" %}',
+        data:{
+          title:$('#title').val(),
+          domain:$('#domain').val(),
+          editordata:$('#summernote').val(),
+          csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+        },
+        success:function(){
+          alert('Article Saved');
+        }
+      })   
+    });
+
+  </script>
+{% endblock %}

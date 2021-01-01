@@ -1,0 +1,50 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+
+<style type="text/css">
+	.style{
+		margin-top: 2%;
+		margin-right: 20%;
+		margin-left: 20%;
+	}
+</style>
+
+{% for ar in article %}
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Article Title</th>
+      <th scope="col">Review</th>
+      <th scope="col">Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{ar.title}}</td>
+      <td>
+      	<button class="btn btn-primary">
+      	<a href="{% url 'review' ar.id %}" style="color: white;">Review</a></button>
+      </td>
+      <td>
+      <button class="btn btn-danger">
+      <a href="{% url 'deletearticle' ar.id %}" style="color: white;">Delete</a>
+ 	 </button>
+  	</td>
+    </tr>
+  </tbody>
+</table>
+
+
+{% endfor %}
+
+{% if not article %}
+
+<center>
+	<h2>No Articles For Review</h2>
+</center>
+
+{% endif %}
+
+{% endblock %}

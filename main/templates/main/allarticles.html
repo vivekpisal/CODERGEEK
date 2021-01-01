@@ -1,0 +1,43 @@
+{% extends "main/base1.html" %}
+
+{% block content %}
+
+<br>
+<br>
+<div class="container">
+ <div class="col-6">
+<ul class="nav nav-pills nav-fill">
+	<li class="nav-item">
+    <a class="nav-link {{all}}" href="{% url 'allarticles' %}">
+    All<span class="badge bg-secondary">{{allcount}}</span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {{Pending}}" href="{% url 'filterarticle' 'Pending' %}">Pending<span class="badge bg-secondary">{{pendingcount}}</span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {{Published}}" href="{% url 'filterarticle' 'Published' %}">Published
+    	<span class="badge bg-secondary ">{{publishedcount}}</span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {{Draft}}" href="{% url 'filterarticle' 'Draft' %}">Draft
+    	<span class="badge bg-secondary">{{draftcount}}</span></a>
+  </li>
+</ul>
+
+	<table class="table table-sm">
+		<tr>
+			<th scope="col">Sr No</th>
+			<th scope="col">Title</th>
+			<th scope="col">Domain</th>
+		</tr>
+		{% for i in articles %}
+		<tr>
+			<td>{{ forloop.counter }}</td>
+			<td><a href="{% url 'editarticle' i.id %}">{{i.title}}</a></td>
+			<td>{{i.domain}}</td>
+		</tr>
+		{% endfor %}
+	</table>
+</div>
+</div>
+{% endblock %}
