@@ -20,12 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'g71m8fxm5zsfewp4762^ce&&42^7)wyf@gtv8ilg3q(a71g71o'
+SECRET_KEY = 'f5727)v7255-g&t&puiq8gxxmupr9jvt8199v4k=711fwespl)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["codergeek.herokuapp.com","127.0.0.1","0.0.0.0","*"]
 
 
 # Application definition
@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'articlewebsite.urls'
@@ -127,6 +128,9 @@ STATICFILES_DIRS = [
         os.path.join(BASE_DIR, 'static'),
 ]
 
+
+MEDIA_ROOT =  os.path.join(BASE_DIR, 'media') 
+MEDIA_URL = '/media/'
 
 LOGIN_REDIRECT_URL="/"
 LOGOUT_REDIRECT_URL="/login/"
