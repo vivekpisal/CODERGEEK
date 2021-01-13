@@ -19,7 +19,8 @@ urlpatterns = [
     path('save',save,name="save"),
     path('register',register,name="register"),
     path('jobs',jobs,name="jobs"),
-    path('addjob',addjob,name="addjob")
+    path('addjob',addjob,name="addjob"),
+    path('courses',courses,name="courses")
 ]
 
 if settings.DEBUG:

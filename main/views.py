@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect,HttpResponseRedirect,HttpResponse
-from .models import Article,PublishedArticle,Jobs,Info
+from .models import *
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from .forms import *
@@ -16,11 +16,14 @@ def home(request):
 
 
 def register(response):
-	if response.method=='POST':
-		form=UserCreationForm(response.POST)
+	if response.method == 'POST':
+		form = UserCreationForm(response.POST)
 		if form.is_valid():
 			form.save()
 			return redirect('login')
+		else:
+			form=UserCreationForm()
+			return render(response,'main/register.html',{'form':form})
 	else:
 		if not response.user.is_authenticated:
 			form=UserCreationForm()
@@ -220,7 +223,7 @@ def jobs(request):
 	job="active"
 	articles=PublishedArticle.objects.all()
 	jobs=Jobs.objects.all()
-	if len(jobs) == 1:
+	if len(jobs) == 0:
 		context={"job":job,"articles":articles}
 	else:
 		context={"job":job,"jobs":jobs,"articles":articles}
@@ -252,8 +255,11 @@ def profile(request):
 			return redirect("profile")
 	else:
 		profile="active"
-		data=Info.objects.filter(user=request.user)[0]
-		info=InfoForm(instance=data)
+		try:
+			data=Info.objects.filter(user=request.user)[0]
+			info=InfoForm(instance=data)
+		except:
+			info=InfoForm()
 		articles=PublishedArticle.objects.all()
 		return render(request,"main/profile.html",{"profile":profile,"articles":articles,"infoform":info})
 
@@ -271,3 +277,8 @@ def search(request):
 		except:
 			article="Article is not present"	
 		return render(request,"main/home.html",{"article":article,"countP":len(countP),"articles":articles,"home":home})
+
+
+def courses(request):
+	courses=Course.objects.all()
+	return render(request,"main/courses.html",{"course":"active","courses":courses})

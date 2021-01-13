@@ -1,0 +1,83 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<style type="text/css">
+	
+body 
+{
+	background: #e8cbc0;
+	background: -webkit-linear-gradient(to right, #e8cbc0, #636fa4);
+	background: linear-gradient(to right, #e8cbc0, #636fa4);
+	min-height: 100vh;
+}
+input{
+  height: 2.5rem;
+  width: 28rem;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+</style>
+
+<center>
+
+<h1 style="color:black;font-family: 'Orbitron', sans-serif;">Pay For Courses?
+<br>We Don't Do That Over Here</h1>
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search For Courses..">
+</center>
+
+
+<div class="container" >
+    <div class="row text-center" id="myUL">
+
+{% for i in courses %}
+        
+        <div class="col-xl-3 col-sm-6 mb-5">
+            <div class="bg-dark shadow-sm" style="height: 23rem;border-radius: 10px;margin-top: 1rem;" onmouseover="this.style.height='24rem',this.style.width='17rem'" onmouseout="this.style.height='23rem',this.style.width='16rem'">
+            	<img src="{{i.course_pic.url}}" style="height: 150px;width: 100%;border-radius: 10px;">
+                <h5 class="mb-0" style="color: white;">{{i.course_name}}</h5>
+                <span  style="color: white;">{{i.description}}</span>
+                <h6><span class="badge badge-secondary">{{i.course_mentor}}</h6>
+
+                <form action="{{i.course_link}}" target="_blank">
+                	<button type="submit" class="btn btn-danger" style="margin-bottom: 7rem;">Learn More</button>
+            	</form>
+            </div>
+        </div><!-- End -->
+
+{% endfor %}
+
+        
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+
+function myFunction() {
+  // Declare variables
+  var input, filter, ul, li, a, i, txtValue;
+  input = document.getElementById('myInput');
+  filter = input.value.toUpperCase();
+  ul = document.getElementById("myUL");
+  li = ul.getElementsByTagName('div');
+
+  // Loop through all list items, and hide those who don't match the search query
+  for (i = 0; i < li.length; i++) {
+    a = li[i].getElementsByTagName("h5")[0];
+    txtValue = a.textContent || a.innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      li[i].style.display = "";
+    } else {
+      li[i].style.display = "none";
+    }
+  }
+}
+
+
+
+</script>
+
+
+{% endblock %}

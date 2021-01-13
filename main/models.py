@@ -46,3 +46,15 @@ class Jobs(models.Model):
 
 	def __str__(self):
 		return f"company_name:-{self.company_name} Job_Role:{self.job_role}"
+
+
+class Course(models.Model):
+	course_name=models.CharField(max_length=50)
+	course_link=models.URLField(max_length=300)
+	description=models.TextField()
+	course_mentor=models.CharField(max_length=50,null=True)
+	course_pic=models.ImageField(upload_to="images/course/",null=True)
+
+
+	def __str__(self):
+		return f"Course :- {self.course_name} Mentor :- {self.course_mentor}"

@@ -1,7 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" nighteye="enabled">
   <head>
     <!-- Required meta tags -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Hanalei+Fill&display=swap" rel="stylesheet">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
@@ -13,37 +16,12 @@
         crossorigin="anonymous">
       </script>
     <script  src="/path/to/bootstrap-show-password.js"></script>
-    <title>Article Writing</title>
+    <title>CODERGEEK</title>
+    {% load static %}
+    <link rel="shortcut icon" href="{% static 'main/images/logo.jpg' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="{% static 'main/css/base.css' %}">
+    
 </head>
-
-<style>
-.ul{
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  width: 200px;
-  background-color: #f1f1f1;
-}
-
-.li{
-  display: block;
-  color: #000;
-  padding: 8px 16px;
-  text-decoration: none;
-
-}
-div div div ul li a.active {
-  background-color: #4CAF50;
-  color: white;
-}
-
-
-li a:hover:not(.active) {
-  background-color: #555;
-  color: white;
-}
-</style>
-{% load static %}
 <body>
     
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -53,16 +31,24 @@ li a:hover:not(.active) {
     </button>
     <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
       <a class="navbar-brand" href="#">
-      <img src="{% static   'main/images/logo.jpg' %}" width="40" height="50" class="d-inline-block align-top" alt="" style="border-radius: 20px;">CODERGEEK</a>
+      <img src="{% static   'main/images/logo.jpg' %}" width="40" height="50" class="d-inline-block align-top" alt="" style="border-radius: 20px;">
+      <span style="font-family: 'Hanalei Fill', cursive;font-size: 2.05rem;">CODERGEEK</span>
+      </a>
       <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link {{home}}" aria-current="page" href="{% url 'home'%}">Home</a>
         </li>
+
+        <li class="nav-item">
+          <a class="nav-link {{course}}" href="{% url 'courses'%}">
+          <i class="fa fa-book" aria-hidden="true"></i>Course</a>
+        </li>
+
         <li class="nav-item">
           <a class="nav-link" href="{% url 'writearticle'%}">
           <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Write Article</a>
-
         </li>
+
         {% if user.is_authenticated %}
         <li class="nav-item">
           <a class="nav-link {{profile}}" href="{% url 'profile' %}">
@@ -76,7 +62,7 @@ li a:hover:not(.active) {
         {% if user.is_superuser %}
           <li class="nav-item">
             <a class="nav-link {{reviewarticle}}" href="{% url 'reviewarticle' %}" tabindex="-1" aria-disabled="true">
-                Review Articles<span class="badge bg-secondary">{{countP}}</span>
+                Review Article<span class="badge bg-secondary">{{countP}}</span>
             </a>
           </li>
           <li class="nav-item">
@@ -88,8 +74,11 @@ li a:hover:not(.active) {
         {% if user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'logout' %}">
-            <i class="fa fa-sign-out" aria-hidden="true"></i> 
-            <img src="{{user.info.profile.url}}" height="30" width="30" style="border-radius:10px;">Logout</a>
+            <i class="fa fa-sign-out" aria-hidden="true"></i>
+            {% if user.info.profile %}
+            <img src="{{user.info.profile.url}}" height="30" width="30" style="border-radius:10px;">
+            {% endif %}
+            Logout</a>
           </li>
         {% endif %}
         {% if not user.is_authenticated %}
@@ -112,6 +101,7 @@ li a:hover:not(.active) {
     </div>
   </div>
 </nav>
+
 
 {% block content %}
 
