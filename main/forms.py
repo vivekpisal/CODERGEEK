@@ -1,5 +1,7 @@
 from django.forms import ModelForm
+from django.contrib.auth.forms import UserCreationForm
 from .models import *
+from django import forms
 
 
 class InfoForm(ModelForm):
@@ -7,3 +9,8 @@ class InfoForm(ModelForm):
 		model=Info
 		fields=["name","profile","college","github","linkdln"]
 
+class RegisterForm(UserCreationForm):
+	email=forms.EmailField()
+	class Meta:
+		model=User
+		fields=["username","email","password1","password1"]

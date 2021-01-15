@@ -11,26 +11,27 @@ def home(request):
 	articles=PublishedArticle.objects.all()
 	countP=Article.objects.filter(status="Pending")
 	article=PublishedArticle.objects.filter(title="How to write an Article?")[0]
-	return render(request,"main/home.html",{"home":home,"articles":articles,"countP":len(countP),"article":article})
+	sidebar=PublishedArticle.objects.all()
+	context={"home":home,"articles":articles,"countP":len(countP),"article":article,"sidebar":sidebar}
+	return render(request,"main/home.html",context)
 
 
 
 def register(response):
 	if response.method == 'POST':
-		form = UserCreationForm(response.POST)
+		form = RegisterForm(response.POST)
 		if form.is_valid():
 			form.save()
 			return redirect('login')
 		else:
-			form=UserCreationForm()
+			form=RegisterForm()
 			return render(response,'main/register.html',{'form':form})
 	else:
 		if not response.user.is_authenticated:
-			form=UserCreationForm()
+			form=RegisterForm()
 			return render(response,'main/register.html',{'form':form})
 		else:
 			return redirect('home')
-	return redirect('login')
 		
 
 
@@ -212,8 +213,10 @@ def showarticle(request,title):
 	article=PublishedArticle.objects.filter(title=title)[0]
 	home="active"
 	articles=PublishedArticle.objects.all()
+	sidebar=PublishedArticle.objects.filter(domain=article.domain)
 	countP=Article.objects.filter(status="Pending")
-	return render(request,"main/home.html",{"article":article,"countP":len(countP),"articles":articles,"home":home})
+	context={"article":article,"countP":len(countP),"articles":articles,"home":home,'sidebar':sidebar}
+	return render(request,"main/home.html",context)
 
 
 
@@ -274,9 +277,12 @@ def search(request):
 		home="active"
 		try:
 			article=PublishedArticle.objects.filter(title=title)[0]
+			sidebar=PublishedArticle.objects.filter(domain=article.domain)
 		except:
-			article="Article is not present"	
-		return render(request,"main/home.html",{"article":article,"countP":len(countP),"articles":articles,"home":home})
+			article="Article is not present"
+			sidebar=PublishedArticle.objects.all()
+		context={"article":article,"countP":len(countP),"articles":articles,"home":home,"sidebar":sidebar}		
+		return render(request,"main/home.html",context)
 
 
 def courses(request):
