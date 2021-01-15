@@ -9,9 +9,7 @@
 		margin-left: 20%;
 	}
 </style>
-
-{% for ar in article %}
-
+{% if article %}
 <table class="table table-bordered">
   <thead>
     <tr>
@@ -20,6 +18,10 @@
       <th scope="col">Delete</th>
     </tr>
   </thead>
+
+{% endif %}
+
+{% for ar in article %}
   <tbody>
     <tr>
       <td>{{ar.title}}</td>
@@ -27,17 +29,16 @@
       	<button class="btn btn-primary">
       	<a href="{% url 'review' ar.id %}" style="color: white;">Review</a></button>
       </td>
-      <td>
+    <td>
       <button class="btn btn-danger">
       <a href="{% url 'deletearticle' ar.id %}" style="color: white;">Delete</a>
- 	 </button>
+ 	    </button>
   	</td>
     </tr>
-  </tbody>
-</table>
-
 
 {% endfor %}
+  </tbody>
+</table>
 
 {% if not article %}
 

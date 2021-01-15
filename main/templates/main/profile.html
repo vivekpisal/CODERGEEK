@@ -8,6 +8,7 @@
 {% if user.info.profile %}
 	<img src="{{user.info.profile.url}}" style="height: 10rem;width: 10rem;border-radius: 5rem;">
 {% endif %}
+
 <form method="post" enctype="multipart/form-data">
   <div class="form-group col-md-4 mb-0">
   	{% csrf_token %}
