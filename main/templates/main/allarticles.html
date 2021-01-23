@@ -29,12 +29,14 @@
 			<th scope="col">Sr No</th>
 			<th scope="col">Title</th>
 			<th scope="col">Domain</th>
+			<th scope="col">Date</th>
 		</tr>
 		{% for i in articles %}
 		<tr>
 			<td>{{ forloop.counter }}</td>
 			<td><a href="{% url 'editarticle' i.id %}">{{i.title}}</a></td>
 			<td>{{i.domain}}</td>
+			<td>{{i.date | date:"F d Y"}}</td>
 		</tr>
 		{% endfor %}
 	</table>

@@ -4,6 +4,12 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from .forms import *
 from datetime import date
+import random
+from django.core.mail import send_mail
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate, login
 #Create your views here.
 
 def home(request):
@@ -17,22 +23,128 @@ def home(request):
 
 
 
-def register(response):
-	if response.method == 'POST':
-		form = RegisterForm(response.POST)
+def register(request):
+	if request.method == 'POST':
+		get_otp = request.POST.get('otp') #213243 #None
+
+		if get_otp:
+			get_usr = request.POST.get('usr')
+			usr = User.objects.get(username=get_usr)
+			if int(get_otp) == UserOTP.objects.filter(user = usr).last().otp:
+				usr.is_active = True
+				usr.save()
+				messages.success(request, f'Account is Created For {usr.username}')
+				return redirect('login')
+			else:
+				messages.warning(request, f'You Entered a Wrong OTP')
+				return render(request, 'main/register.html', {'otp': True, 'usr': usr})
+
+		form = SignUpForm(request.POST)
 		if form.is_valid():
 			form.save()
-			return redirect('login')
-		else:
-			form=RegisterForm()
-			return render(response,'main/register.html',{'form':form})
-	else:
-		if not response.user.is_authenticated:
-			form=RegisterForm()
-			return render(response,'main/register.html',{'form':form})
-		else:
-			return redirect('home')
+			username = form.cleaned_data.get('username')
+			usr = User.objects.get(username=username)
+			usr.email = usr.email
+			usr.is_active = False
+			usr.save()
+			usr_otp = random.randint(100000, 999999)
+			UserOTP.objects.create(user = usr, otp = usr_otp)
+
+			mess = f"Hello {usr.first_name},\nYour OTP is {usr_otp}\nThanks!"
+
+			send_mail(
+				"Welcome to CoderGeek - Verify Your Email",
+				mess,
+				settings.EMAIL_HOST_USER,
+				[usr.email],
+				fail_silently = False
+				)
+
+			return render(request, 'main/register.html', {'otp': True, 'usr': usr})
+
 		
+	else:
+		form = SignUpForm()
+
+	return render(request, 'main/register.html', {'form':form})
+		
+
+
+def resend_otp(request):
+	if request.method == "GET":
+		get_usr = request.GET['usr']
+		if User.objects.filter(username = get_usr).exists() and not User.objects.get(username = get_usr).is_active:
+			usr = User.objects.get(username=get_usr)
+			usr_otp = random.randint(100000, 999999)
+			UserOTP.objects.create(user = usr, otp = usr_otp)
+			mess = f"Hello {usr.first_name},\nYour OTP is {usr_otp}\nThanks!"
+
+			send_mail(
+				"Welcome to CoderGeek - Verify Your Email",
+				mess,
+				settings.EMAIL_HOST_USER,
+				[usr.email],
+				fail_silently = False
+				)
+			return HttpResponse("Resend")
+
+	return HttpResponse("Can't Send ")
+
+
+def login_view(request):
+	if request.user.is_authenticated:
+		return redirect('home')
+	if request.method == 'POST':
+		get_otp = request.POST.get('otp') #213243 #None
+
+		if get_otp:
+			get_usr = request.POST.get('usr')
+			usr = User.objects.get(username=get_usr)
+			if int(get_otp) == UserOTP.objects.filter(user = usr).last().otp:
+				usr.is_active = True
+				usr.save()
+				login(request, usr)
+				return redirect('home')
+			else:
+				messages.warning(request, f'You Entered a Wrong OTP')
+				return render(request, 'registration/login.html', {'otp': True, 'usr': usr})
+
+
+		usrname = request.POST['username']
+		passwd = request.POST['password']
+
+		user = authenticate(request, username = usrname, password = passwd) #None
+		if user is not None:
+			login(request, user)
+			return redirect('home')
+		elif not User.objects.filter(username = usrname).exists():
+			messages.warning(request, f'Please enter a correct username and password. Note that both fields may be case-sensitive.')
+			return redirect('login')
+		elif not User.objects.get(username=usrname).is_active:
+			usr = User.objects.get(username=usrname)
+			usr_otp = random.randint(100000, 999999)
+			UserOTP.objects.create(user = usr, otp = usr_otp)
+			mess = f"Hello {usr.first_name},\nYour OTP is {usr_otp}\nThanks!"
+
+			send_mail(
+				"Welcome to CoderGeek - Verify Your Email",
+				mess,
+				settings.EMAIL_HOST_USER,
+				[usr.email],
+				fail_silently = False
+				)
+			return render(request, 'registration/login.html', {'otp': True, 'usr': usr})
+		else:
+			messages.warning(request, f'Please enter a correct username and password. Note that both fields may be case-sensitive.')
+			return redirect('login')
+
+	form = AuthenticationForm()
+	return render(request, 'registration/login.html', {'form': form})
+
+
+
+
+
 
 
 @login_required(login_url="/login/")
@@ -91,13 +203,6 @@ def editarticle(request,id):
 		article=Article.objects.filter(id=id)
 		return render(request,"main/editarticle.html",{"article":article[0]})
 
-
-
-def login(response):
-	if response.user.is_authenticated:
-		return redirect('home')
-	else:
-		return HttpResponseRedirect("/login/")
 
 
 

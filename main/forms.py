@@ -14,3 +14,11 @@ class RegisterForm(UserCreationForm):
 	class Meta:
 		model=User
 		fields=["username","email","password1","password1"]
+
+
+class SignUpForm(UserCreationForm):
+	email = forms.EmailField(label = ("Email"))
+
+	class Meta:
+		model = User
+		fields = ('username', 'email', 'password1', 'password2')

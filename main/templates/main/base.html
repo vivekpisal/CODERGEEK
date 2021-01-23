@@ -2,6 +2,7 @@
 <html lang="en" nighteye="enabled">
   <head>
     <!-- Required meta tags -->
+    
     <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Hanalei+Fill&display=swap" rel="stylesheet">
@@ -21,9 +22,10 @@
     <link rel="shortcut icon" href="{% static 'main/images/logo.jpg' %}" type="image/x-icon" />
     <link rel="stylesheet" href="{% static 'main/css/base.css' %}">
     
+    
 </head>
 <style>
-  body 
+body 
 {
 	background: #dbd5d3;
 	background: -webkit-linear-gradient(to right, #fffaf8, #c9cbd3);
@@ -69,26 +71,26 @@
             <i class="fa fa-briefcase" aria-hidden="true"></i> Jobs</a>
         </li>
         {% if user.is_superuser %}
-          <li class="nav-item">
-            <a class="nav-link {{reviewarticle}}" href="{% url 'reviewarticle' %}" tabindex="-1" aria-disabled="true">
-                Review Article<span class="badge bg-secondary">{{countP}}</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link {{addjob}}" href="{% url 'addjob' %}" tabindex="-1" aria-disabled="true">
-                Add Job<span class="badge bg-secondary"></span>
-            </a>
-          </li>
+            <li class="nav-item">
+              <a class="nav-link {{reviewarticle}}" href="{% url 'reviewarticle' %}" tabindex="-1" aria-disabled="true">
+                  Review Article<span class="badge bg-secondary">{{countP}}</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {{addjob}}" href="{% url 'addjob' %}" tabindex="-1" aria-disabled="true">
+                  Add Job<span class="badge bg-secondary"></span>
+              </a>
+            </li>
         {% endif %}
         {% if user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'logout' %}">
-            <i class="fa fa-sign-out" aria-hidden="true"></i>
-            {% if user.info.profile %}
-            <img src="{{user.info.profile.url}}" height="30" width="30" style="border-radius:10px;">
-            {% endif %}
-            Logout</a>
-          </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}">
+              <i class="fa fa-sign-out" aria-hidden="true"></i>
+              {% if user.info.profile %}
+              <img src="{{user.info.profile.url}}" height="30" width="30" style="border-radius:10px;">
+              {% endif %}
+              Logout</a>
+            </li>
         {% endif %}
         {% if not user.is_authenticated %}
           <li class="nav-item">

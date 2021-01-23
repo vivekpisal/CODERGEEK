@@ -1,5 +1,6 @@
-from django.urls import path
+from django.urls import path,include
 from django.conf import settings
+from django.contrib.auth.views import *
 from django.conf.urls.static import static
 from .views import *
 
@@ -20,7 +21,27 @@ urlpatterns = [
     path('register',register,name="register"),
     path('jobs',jobs,name="jobs"),
     path('addjob',addjob,name="addjob"),
-    path('courses',courses,name="courses")
+    path('courses',courses,name="courses"),
+    path('login/',login_view,name="login"),
+    path("password-reset/", 
+        PasswordResetView.as_view(template_name='registration/password_reset.html'),
+        name="password_reset"),
+
+    path("password-reset/done/", 
+        PasswordResetDoneView.as_view(template_name='registration/password_reset_done.html'), 
+        name="password_reset_done"),
+
+    path("password-reset-confirm/<uidb64>/<token>/", 
+        PasswordResetConfirmView.as_view(template_name='registration/password_reset_confirm.html'), 
+        name="password_reset_confirm"),
+
+    path("password-reset-complete/", 
+        PasswordResetCompleteView.as_view(template_name='registration/password_reset_complete.html'), 
+        name="password_reset_complete"),
+
+    path('resendOTP', resend_otp),
+    path('',include("django.contrib.auth.urls")),
+    
 ]
 
 if settings.DEBUG:
