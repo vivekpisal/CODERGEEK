@@ -232,9 +232,25 @@ def review(request,id):
 			published.html=article.html
 			published.domain=article.domain
 			published.save()
+			mess = f"Congratulation {request.user} your article {published.title} is published on our website."
+			send_mail(
+				"CoderGeek",
+				mess,
+				settings.EMAIL_HOST_USER,
+				[request.user.email],
+				fail_silently = False
+				)
 		else:
 			published=PublishedArticle(user=article.user,title=article.title,html=article.html,domain=article.domain)
 			published.save()
+			mess = f"Congratulation {request.user} your article {published.title} is published on our website."
+			send_mail(
+				"CoderGeek",
+				mess,
+				settings.EMAIL_HOST_USER,
+				[request.user.email],
+				fail_silently = False
+				)
 		return redirect('reviewarticle')
 	else:
 		article=Article.objects.filter(id=id)

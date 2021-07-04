@@ -9,6 +9,7 @@ class InfoForm(ModelForm):
 		model=Info
 		fields=["name","profile","college","github","linkdln"]
 
+
 class RegisterForm(UserCreationForm):
 	email=forms.EmailField()
 	class Meta:

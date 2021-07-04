@@ -40,7 +40,7 @@ urlpatterns = [
         name="password_reset_complete"),
 
     path('resendOTP', resend_otp),
-    path('',include("django.contrib.auth.urls")),
+    path('logout/', LogoutView.as_view(next_page = 'login'), name = 'logout'),
     
 ]
 
